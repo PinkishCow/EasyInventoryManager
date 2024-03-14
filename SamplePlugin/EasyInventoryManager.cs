@@ -9,6 +9,11 @@ using EasyInventoryManager.Windows;
 using ECommons;
 using ECommons.Logging;
 using ECommons.Automation;
+using ECommons.DalamudServices;
+using ECommons.ExcelServices.TerritoryEnumeration;
+using ECommons.GameHelpers;
+using System;
+using System.Numerics;
 
 
 namespace EasyInventoryManager
@@ -40,11 +45,7 @@ namespace EasyInventoryManager
             this.CommandManager = commandManager;
             config = Configuration.Load(this.PluginInterface);
 
-            TaskManager = new() { AbortOnTimeout = true , TimeLimitMS = 20000 };
-
-
-
-
+            TaskManager = new() { AbortOnTimeout = true , TimeLimitMS = 20000, ShowDebug = true };
 
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
@@ -80,9 +81,18 @@ namespace EasyInventoryManager
             if (!bell && (config.UsePersonalHouse || config.UseFCHouse) && !globalStop)
             {
                 Tasks.GoHomeTask.Enqueue();
-            } else
+                Instance.TaskManager.Enqueue(() => Player.Interactable && Svc.ClientState.TerritoryType.EqualsAny(Houses.List), 1000 * 60, "WaitUntilArrival");
+                //Make sure we wait for loading, etc
+                var time = DateTimeOffset.Now.AddSeconds(5);
+                Instance.TaskManager.Enqueue(() => Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
+            } else if (!bell || Vector3.Distance(Svc.ClientState.LocalPlayer.Position, Helpers.GetClosestRetainerBell().Position) > 20f)
             {
                 DuoLog.Error("No house to go to. Stand next to a bell, hobo");
+            }
+
+            if(!globalStop)
+            {
+                Tasks.SelectBellTask.Enqueue();
             }
 
             //Got to have a bell nearby if we aren't going home

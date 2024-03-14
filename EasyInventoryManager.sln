@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyInventoryManager", "Sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommons", "ECommons\ECommons\ECommons.csproj", "{EAF1AB94-173A-4870-8C9B-4DE25C2E9B55}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickLib", "ClickLib\ClickLib\ClickLib.csproj", "{64FAA773-87CF-4DD1-88C7-6E1657E52716}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,10 @@ Global
 		{EAF1AB94-173A-4870-8C9B-4DE25C2E9B55}.Debug|x64.Build.0 = Debug|x64
 		{EAF1AB94-173A-4870-8C9B-4DE25C2E9B55}.Release|x64.ActiveCfg = Release|x64
 		{EAF1AB94-173A-4870-8C9B-4DE25C2E9B55}.Release|x64.Build.0 = Release|x64
+		{64FAA773-87CF-4DD1-88C7-6E1657E52716}.Debug|x64.ActiveCfg = Debug|x64
+		{64FAA773-87CF-4DD1-88C7-6E1657E52716}.Debug|x64.Build.0 = Debug|x64
+		{64FAA773-87CF-4DD1-88C7-6E1657E52716}.Release|x64.ActiveCfg = Release|x64
+		{64FAA773-87CF-4DD1-88C7-6E1657E52716}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
