@@ -44,6 +44,11 @@ namespace EasyInventoryManager
             return null;
         }
 
+        internal static GameObject GetClosestEntrance()
+        {
+
+        }
+
         internal static float GetValidInteractionDistance(GameObject bell)
         {
             if (bell.ObjectKind == ObjectKind.Housing)

@@ -6,22 +6,15 @@
         <Authors></Authors>
         <Company></Company>
         <Version>0.0.0.1</Version>
-        <Description>A sample plugin.</Description>
+        <Description>Easy Inventory Manager.</Description>
         <Copyright></Copyright>
-        <PackageProjectUrl>https://github.com/goatcorp/SamplePlugin</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/PinkishCow/EasyInventoryManager</PackageProjectUrl>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\Data\goat.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Visible>false</Visible>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>

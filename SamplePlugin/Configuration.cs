@@ -23,9 +23,11 @@ namespace EasyInventoryManager
         [NonSerialized]
         private DalamudPluginInterface? pluginInterface;
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        public static Configuration Load(DalamudPluginInterface pluginInterface)
         {
-            this.pluginInterface = pluginInterface;
+            var config = pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+            config.pluginInterface = pluginInterface;
+            return config;
         }
 
         public void Save()
