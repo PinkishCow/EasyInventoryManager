@@ -8,10 +8,9 @@ namespace EasyInventoryManager.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    private IDalamudTextureWrap goatImage;
     private EasyInventoryManager plugin;
 
-    public MainWindow(EasyInventoryManager plugin, IDalamudTextureWrap goatImage) : base(
+    public MainWindow(EasyInventoryManager plugin) : base(
         "My Amazing Window", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         this.SizeConstraints = new WindowSizeConstraints
@@ -20,14 +19,10 @@ public class MainWindow : Window, IDisposable
             MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
         };
 
-        this.goatImage = goatImage;
         this.plugin = plugin;
     }
 
-    public void Dispose()
-    {
-        this.goatImage.Dispose();
-    }
+    public void Dispose() { }
 
     public override void Draw()
     {
@@ -35,12 +30,9 @@ public class MainWindow : Window, IDisposable
         {
             this.plugin.DrawConfigUI();
         }
+        else if (ImGui.Button("Start"))
+        {
 
-        ImGui.Spacing();
-
-        ImGui.Text("Have a goat:");
-        ImGui.Indent(55);
-        ImGui.Image(this.goatImage.ImGuiHandle, new Vector2(this.goatImage.Width, this.goatImage.Height));
-        ImGui.Unindent(55);
+        }
     }
 }

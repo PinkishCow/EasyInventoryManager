@@ -6,6 +6,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using EasyInventoryManager.Windows;
 using ECommons;
+using ECommons.Logging;
 
 namespace EasyInventoryManager
 {
@@ -33,12 +34,8 @@ namespace EasyInventoryManager
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
 
-            // you might normally want to embed resources and load them from the manifest stream
-            var imagePath = Path.Combine(PluginInterface.AssemblyLocation.Directory?.FullName!, "goat.png");
-            var goatImage = this.PluginInterface.UiBuilder.LoadImage(imagePath);
-
             ConfigWindow = new ConfigWindow(this);
-            MainWindow = new MainWindow(this, goatImage);
+            MainWindow = new MainWindow(this);
 
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
@@ -62,6 +59,28 @@ namespace EasyInventoryManager
             ECommonsMain.Dispose();
 
             this.CommandManager.RemoveHandler(CommandName);
+        }
+
+        public void Start()
+        {
+            //Don't bother going home if there is already a bell in interaction distance or open
+            var bell = Helpers.GetReachableRetainerBell();
+
+
+            if (!bell && (Configuration.UsePersonalHouse || Configuration.UseFCHouse))
+            {
+                Tasks.GoHomeTask.Enqueue();
+            } else
+            {
+                DuoLog.Error("No house to go to. Stand next to a bell, hobo");
+            }
+
+            //Got to have a bell nearby if we aren't going home
+            //Find the bell
+
+            //Dingle it
+
+            //Retain
         }
 
         private void OnCommand(string command, string args)

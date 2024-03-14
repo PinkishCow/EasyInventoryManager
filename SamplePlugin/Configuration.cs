@@ -15,6 +15,10 @@ namespace EasyInventoryManager
 
         public bool DepositAll { get; set; } = false;
 
+        public bool UsePersonalHouse { get; set; } = false;
+
+        public bool UseFCHouse { get; set; } = false;
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? pluginInterface;

@@ -29,6 +29,8 @@ public class ConfigWindow : Window, IDisposable
         var depositAll = this.configuration.DepositAll;
         var useSaddlebag = this.configuration.UseSaddlebag;
         var depositCrystals = this.configuration.DepositCrystals;
+        var usePersonalHouse = this.configuration.UsePersonalHouse;
+        var useFCHouse = this.configuration.UseFCHouse;
 
         if (ImGui.Checkbox("Deposit all items", ref depositAll))
         {
@@ -41,6 +43,14 @@ public class ConfigWindow : Window, IDisposable
         else if (ImGui.Checkbox("Deposit crystals", ref depositCrystals))
         {
             this.configuration.DepositCrystals = depositCrystals;
+        }
+        else if (ImGui.Checkbox("Use personal house", ref usePersonalHouse))
+        {
+            this.configuration.UsePersonalHouse = usePersonalHouse;
+        }
+        else if (ImGui.Checkbox("Use FC house", ref useFCHouse))
+        {
+            this.configuration.UseFCHouse = useFCHouse;
         }
         this.configuration.Save();
 
