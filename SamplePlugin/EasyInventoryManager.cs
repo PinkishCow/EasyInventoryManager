@@ -1,30 +1,32 @@
-﻿using Dalamud.Game.Command;
+using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
-using SamplePlugin.Windows;
+using EasyInventoryManager.Windows;
+using ECommons;
 
-namespace SamplePlugin
+namespace EasyInventoryManager
 {
-    public sealed class Plugin : IDalamudPlugin
+    public sealed class EasyInventoryManager : IDalamudPlugin
     {
-        public string Name => "Sample Plugin";
-        private const string CommandName = "/pmycommand";
+        public string Name => "Easy Inventory Manager";
+        private const string CommandName = "/em";
 
         private DalamudPluginInterface PluginInterface { get; init; }
         private ICommandManager CommandManager { get; init; }
         public Configuration Configuration { get; init; }
-        public WindowSystem WindowSystem = new("SamplePlugin");
+        public WindowSystem WindowSystem = new("EasyInventoryManager");
 
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
 
-        public Plugin(
+        public EasyInventoryManager(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] ICommandManager commandManager)
         {
+            ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
 
@@ -37,7 +39,7 @@ namespace SamplePlugin
 
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this, goatImage);
-            
+
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
 
@@ -53,10 +55,12 @@ namespace SamplePlugin
         public void Dispose()
         {
             this.WindowSystem.RemoveAllWindows();
-            
+
             ConfigWindow.Dispose();
             MainWindow.Dispose();
-            
+
+            ECommonsMain.Dispose();
+
             this.CommandManager.RemoveHandler(CommandName);
         }
 

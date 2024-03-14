@@ -1,23 +1,24 @@
-﻿using System;
+using System;
 using System.Numerics;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 
-namespace SamplePlugin.Windows;
+namespace EasyInventoryManager.Windows;
 
 public class ConfigWindow : Window, IDisposable
 {
-    private Configuration Configuration;
+    private Configuration configuration;
 
-    public ConfigWindow(Plugin plugin) : base(
+    public ConfigWindow(EasyInventoryManager plugin) : base(
         "A Wonderful Configuration Window",
         ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar |
-        ImGuiWindowFlags.NoScrollWithMouse)
+        ImGuiWindowFlags.NoScrollWithMouse
+        )
     {
         this.Size = new Vector2(232, 75);
         this.SizeCondition = ImGuiCond.Always;
 
-        this.Configuration = plugin.Configuration;
+        this.configuration = plugin.Configuration;
     }
 
     public void Dispose() { }
@@ -25,12 +26,23 @@ public class ConfigWindow : Window, IDisposable
     public override void Draw()
     {
         // can't ref a property, so use a local copy
-        var configValue = this.Configuration.SomePropertyToBeSavedAndWithADefault;
-        if (ImGui.Checkbox("Random Config Bool", ref configValue))
+        var depositAll = this.configuration.DepositAll;
+        var useSaddlebag = this.configuration.UseSaddlebag;
+        var depositCrystals = this.configuration.DepositCrystals;
+
+        if (ImGui.Checkbox("Deposit all items", ref depositAll))
         {
-            this.Configuration.SomePropertyToBeSavedAndWithADefault = configValue;
-            // can save immediately on change, if you don't want to provide a "Save and Close" button
-            this.Configuration.Save();
+            this.configuration.DepositAll = depositAll;
         }
+        else if (ImGui.Checkbox("Use saddlebag", ref useSaddlebag))
+        {
+            this.configuration.UseSaddlebag = useSaddlebag;
+        }
+        else if (ImGui.Checkbox("Deposit crystals", ref depositCrystals))
+        {
+            this.configuration.DepositCrystals = depositCrystals;
+        }
+        this.configuration.Save();
+
     }
 }
