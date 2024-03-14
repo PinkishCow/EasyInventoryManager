@@ -40,11 +40,7 @@ namespace EasyInventoryManager
             this.CommandManager = commandManager;
             config = Configuration.Load(this.PluginInterface);
 
-            TaskManager = new() { AbortOnTimeout = true , TimeLimitMS = 20000 };
-
-
-
-
+            TaskManager = new() { AbortOnTimeout = true , TimeLimitMS = 20000, ShowDebug = true };
 
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
