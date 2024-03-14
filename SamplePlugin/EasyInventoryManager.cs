@@ -81,6 +81,11 @@ namespace EasyInventoryManager
                 DuoLog.Error("No house to go to. Stand next to a bell, hobo");
             }
 
+            if(!globalStop)
+            {
+                Tasks.SelectBellTask.Enqueue();
+            }
+
             //Got to have a bell nearby if we aren't going home
             //Find the bell
 

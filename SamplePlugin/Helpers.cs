@@ -81,6 +81,16 @@ namespace EasyInventoryManager
             return null;
         }
 
+        internal static GameObject GetClosestRetainerBell()
+        {
+            var item = from x in Svc.Objects
+                       where x.IsTargetable && x.Name.ToString().EqualsIgnoreCaseAny(BellName)
+                       orderby Vector3.Distance(x.Position, Svc.ClientState.LocalPlayer.Position)
+                       select x;
+
+            return item.FirstOrDefault();
+        }
+
         internal static GameObject GetClosestEntrance()
         {
             var item = from x in Svc.Objects
