@@ -19,6 +19,8 @@ namespace EasyInventoryManager
 
         public bool UseFCHouse { get; set; } = false;
 
+        public bool retardTest { get; set; } = false; 
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? pluginInterface;

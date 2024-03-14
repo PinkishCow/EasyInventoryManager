@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using ECommons;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using ECommons.Logging; 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,13 +32,17 @@ namespace EasyInventoryManager.Retainer
             if (!Svc.Targets.Target!.IsRetainerBell()) return false;
             if (!Svc.Objects.Any(x => x.ObjectKind == ObjectKind.Retainer)) return false;
 
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerSellList", out var addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerGrid0", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerGrid1", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerGrid2", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerGrid3", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerGrid4", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
-            if (GenericHelpers.TryGetAddonByName<AtkUnitBase>("RetainerCrystalGrid", out addon) && GenericHelpers.IsAddonReady(addon)) return true;
+            var addonsToCheck = new[] { "RetainerSellList", "RetainerGrid0", "RetainerGrid1", "RetainerGrid2", "RetainerGrid3", "RetainerGrid4", "RetainerCrystalGrid" };
+            foreach (var addonName in addonsToCheck)
+            
+                if (GenericHelpers.TryGetAddonByName<AtkUnitBase>(addonName, out var addon) && GenericHelpers.IsAddonReady(addon))
+
+            {
+                    DuoLog.Debug($"Checked 'addonName' and it worky");
+                    return true; 
+            }
+
+
 
             return false;
         }

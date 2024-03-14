@@ -31,10 +31,15 @@ public class ConfigWindow : Window, IDisposable
         var depositCrystals = this.configuration.DepositCrystals;
         var usePersonalHouse = this.configuration.UsePersonalHouse;
         var useFCHouse = this.configuration.UseFCHouse;
+        var retardTest = this.configuration.retardTest; 
 
         if (ImGui.Checkbox("Deposit all items", ref depositAll))
         {
             this.configuration.DepositAll = depositAll;
+        }
+        else if (ImGui.Checkbox("retardTtest", ref retardTest))
+        {
+            this.configuration.retardTest = retardTest;
         }
         else if (ImGui.Checkbox("Use saddlebag", ref useSaddlebag))
         {
