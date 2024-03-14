@@ -27,10 +27,11 @@ namespace EasyInventoryManager.Tasks
                     Instance.TaskManager.Abort();
                 }
 
-                if (Vector3.Distance(bell.Position, Svc.ClientState.LocalPlayer.Position) > 3f)
+                if (Vector3.Distance(bell.Position, Svc.ClientState.LocalPlayer.Position) > 4f)
                 {
                     if (bell != null && Vector3.Distance(bell.Position, Svc.ClientState.LocalPlayer.Position) < 20f)
                     {
+                        Instance.TaskManager.EnqueueImmediate(() => SetTarget(bell), "SetTarget");
                         Instance.TaskManager.EnqueueImmediate(() => Lockon(), "Lockon");
                         Instance.TaskManager.EnqueueImmediate(() => Approach(), "Approach");
                         Instance.TaskManager.EnqueueImmediate(() => AutorunOff(bell), "AutorunOff");
@@ -44,6 +45,15 @@ namespace EasyInventoryManager.Tasks
             });
         }
 
+        internal static bool SetTarget(GameObject bell)
+        {
+            if (EzThrottler.Throttle("SetTarget", 200))
+            {
+                Svc.Targets.Target = bell;
+                return true;
+            }
+            return false;
+        }
 
         internal static bool? Interact(GameObject bell)
         {
@@ -76,7 +86,7 @@ namespace EasyInventoryManager.Tasks
         // Disable autorun when close to the entrance
         internal static bool? AutorunOff(GameObject bell)
         {
-            if (Vector3.Distance(bell.Position, Svc.ClientState.LocalPlayer.Position) < 3f && EzThrottler.Throttle("AutorunOff", 200))
+            if (Vector3.Distance(bell.Position, Svc.ClientState.LocalPlayer.Position) < 4f && EzThrottler.Throttle("AutorunOff", 200))
             {
                 Chat.Instance.SendMessage("/automove off");
                 return true;
