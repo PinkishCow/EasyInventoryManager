@@ -44,13 +44,13 @@ namespace EasyInventoryManager.Tasks
             });
             Instance.TaskManager.Enqueue(() => DuoLog.Information("Arrived at house"));
 
-            Instance.TaskManager.Enqueue(() =>
-            {
-                if(Helpers.GetReachableRetainerBell() == null)
-                {
-                    var entrance = 
-                }
-            });
+            //Instance.TaskManager.Enqueue(() =>
+            //{
+            //    if(Helpers.GetReachableRetainerBell() == null)
+            //    {
+            //        var entrance = 
+            //    }
+            //});
 
 
         }
