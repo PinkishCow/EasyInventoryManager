@@ -1,3 +1,4 @@
+global using static EasyInventoryManager.EasyInventoryManager;
 using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
@@ -7,32 +8,43 @@ using Dalamud.Plugin.Services;
 using EasyInventoryManager.Windows;
 using ECommons;
 using ECommons.Logging;
+using ECommons.Automation;
+
 
 namespace EasyInventoryManager
 {
     public sealed class EasyInventoryManager : IDalamudPlugin
     {
         public string Name => "Easy Inventory Manager";
-        private const string CommandName = "/em";
+        private const string CommandName = "/eim";
+        private bool globalStop = false;
 
         private DalamudPluginInterface PluginInterface { get; init; }
         private ICommandManager CommandManager { get; init; }
-        public Configuration Configuration { get; init; }
+        public static Configuration config { get; set; }
         public WindowSystem WindowSystem = new("EasyInventoryManager");
 
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
+
+        internal static EasyInventoryManager Instance;
+        internal TaskManager TaskManager;
 
         public EasyInventoryManager(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] ICommandManager commandManager)
         {
             ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
+            Instance = this;
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
+            config = Configuration.Load(this.PluginInterface);
 
-            this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            this.Configuration.Initialize(this.PluginInterface);
+            TaskManager = new() { AbortOnTimeout = true , TimeLimitMS = 20000 };
+
+
+
+
 
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
@@ -40,10 +52,7 @@ namespace EasyInventoryManager
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
 
-            this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
-            {
-                HelpMessage = "A useful message to display in /xlhelp"
-            });
+            EzCmd.Add(CommandName, CommandHandler, "Easy Inventory Manager commands");
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
@@ -61,13 +70,14 @@ namespace EasyInventoryManager
             this.CommandManager.RemoveHandler(CommandName);
         }
 
-        public void Start()
+        public void StartMainLoop()
         {
+            globalStop = false;
             //Don't bother going home if there is already a bell in interaction distance or open
             var bell = Helpers.GetReachableRetainerBell();
 
 
-            if (!bell && (Configuration.UsePersonalHouse || Configuration.UseFCHouse))
+            if (!bell && (config.UsePersonalHouse || config.UseFCHouse) && !globalStop)
             {
                 Tasks.GoHomeTask.Enqueue();
             } else
@@ -83,10 +93,24 @@ namespace EasyInventoryManager
             //Retain
         }
 
-        private void OnCommand(string command, string args)
+        public void StopAll()
         {
-            // in response to the slash command, just display our main ui
-            MainWindow.IsOpen = true;
+            globalStop = true;
+            TaskManager.Abort();
+        }
+
+        private void CommandHandler(string command, string args)
+        {
+            if (args == "config")
+            {
+                ConfigWindow.IsOpen = true;
+            } else if (args == "home")
+            {
+                StartMainLoop();
+            } else
+            {
+                MainWindow.IsOpen = true;
+            }
         }
 
         private void DrawUI()

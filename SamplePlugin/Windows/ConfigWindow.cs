@@ -7,18 +7,16 @@ namespace EasyInventoryManager.Windows;
 
 public class ConfigWindow : Window, IDisposable
 {
-    private Configuration configuration;
 
     public ConfigWindow(EasyInventoryManager plugin) : base(
-        "A Wonderful Configuration Window",
-        ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar |
-        ImGuiWindowFlags.NoScrollWithMouse
+        "A Wonderful Configuration Window"
         )
     {
-        this.Size = new Vector2(232, 75);
-        this.SizeCondition = ImGuiCond.Always;
-
-        this.configuration = plugin.Configuration;
+        this.SizeConstraints = new()
+        {
+            MinimumSize = new(250, 500),
+            MaximumSize = new(9999, 9999)
+        };
     }
 
     public void Dispose() { }
@@ -35,7 +33,7 @@ public class ConfigWindow : Window, IDisposable
 
         if (ImGui.Checkbox("Deposit all items", ref depositAll))
         {
-            this.configuration.DepositAll = depositAll;
+            config.DepositAll = depositAll;
         }
         else if (ImGui.Checkbox("retardTtest", ref retardTest))
         {
@@ -43,21 +41,21 @@ public class ConfigWindow : Window, IDisposable
         }
         else if (ImGui.Checkbox("Use saddlebag", ref useSaddlebag))
         {
-            this.configuration.UseSaddlebag = useSaddlebag;
+            config.UseSaddlebag = useSaddlebag;
         }
         else if (ImGui.Checkbox("Deposit crystals", ref depositCrystals))
         {
-            this.configuration.DepositCrystals = depositCrystals;
+            config.DepositCrystals = depositCrystals;
         }
         else if (ImGui.Checkbox("Use personal house", ref usePersonalHouse))
         {
-            this.configuration.UsePersonalHouse = usePersonalHouse;
+            config.UsePersonalHouse = usePersonalHouse;
         }
         else if (ImGui.Checkbox("Use FC house", ref useFCHouse))
         {
-            this.configuration.UseFCHouse = useFCHouse;
+            config.UseFCHouse = useFCHouse;
         }
-        this.configuration.Save();
+        config.Save();
 
     }
 }

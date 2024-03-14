@@ -32,7 +32,11 @@ public class MainWindow : Window, IDisposable
         }
         else if (ImGui.Button("Start"))
         {
-
+            Instance.StartMainLoop();
+        }
+        else if (ImGui.Button("Stop"))
+        {
+            Instance.StopAll();
         }
     }
 }
