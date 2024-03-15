@@ -1,25 +1,17 @@
 using ClickLib.Clicks;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
-using Dalamud.Utility;
 using ECommons;
 using ECommons.Automation;
 using ECommons.DalamudServices;
-using ECommons.Events;
 using ECommons.ExcelServices.TerritoryEnumeration;
 using ECommons.GameHelpers;
 using ECommons.Logging;
 using ECommons.Throttlers;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyInventoryManager.Tasks
 {
@@ -51,7 +43,7 @@ namespace EasyInventoryManager.Tasks
 
             // Set a timestamp to wait for a specific time
             var time = DateTimeOffset.Now.AddSeconds(6);
-            Instance.TaskManager.Enqueue(() => Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
+            Instance.TaskManager.Enqueue(() => Helpers.Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
 
             // Wait until the player is interactable and in one of the residential areas
             Instance.TaskManager.Enqueue(() => Player.Interactable && Svc.ClientState.TerritoryType.EqualsAny(ResidentalAreas.List), 1000 * 60, "WaitUntilArrival");
@@ -62,10 +54,10 @@ namespace EasyInventoryManager.Tasks
             // Check if the reachable retainer bell is null
             Instance.TaskManager.Enqueue(() =>
             {
-                if (Helpers.GetReachableRetainerBell() == null)
+                if (Helpers.Helpers.GetReachableRetainerBell() == null)
                 {
                     // Get the closest entrance and set it as the target
-                    var entrance = Helpers.GetClosestEntrance();
+                    var entrance = Helpers.Helpers.GetClosestEntrance();
                     if (!entrance)
                     {
                         DuoLog.Error("Could not find entrance");

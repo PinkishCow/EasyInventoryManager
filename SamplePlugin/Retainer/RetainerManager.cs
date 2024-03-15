@@ -14,6 +14,7 @@ using Lumina.Excel.GeneratedSheets;
 using FFXIVClientStructs.Interop.Attributes;
 using ImGuiNET;
 using System.Reflection.Metadata.Ecma335;
+using EasyInventoryManager.Helpers;
 
 namespace EasyInventoryManager.Retainer
 {

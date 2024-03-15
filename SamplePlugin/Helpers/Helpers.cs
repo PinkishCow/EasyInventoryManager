@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyInventoryManager
+namespace EasyInventoryManager.Helpers
 {
     internal unsafe static class Helpers
     {
@@ -119,7 +119,7 @@ namespace EasyInventoryManager
 
         internal static AtkUnitBase* GetSpecificYesno(params string[] s)
         {
-            for (int i = 1; i < 100; i++)
+            for (var i = 1; i < 100; i++)
             {
                 try
                 {
@@ -192,7 +192,7 @@ namespace EasyInventoryManager
         internal static List<string> GetEntries(AddonSelectString* addon)
         {
             var list = new List<string>();
-            for (int i = 0; i < addon->PopupMenu.PopupMenu.EntryCount; i++)
+            for (var i = 0; i < addon->PopupMenu.PopupMenu.EntryCount; i++)
             {
                 list.Add(MemoryHelper.ReadSeStringNullTerminated((nint)addon->PopupMenu.PopupMenu.EntryNames[i]).ExtractText());
             }

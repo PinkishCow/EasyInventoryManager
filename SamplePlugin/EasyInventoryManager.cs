@@ -71,12 +71,15 @@ namespace EasyInventoryManager
             this.CommandManager.RemoveHandler(CommandName);
         }
 
-        public void StartMainLoop()
+        public unsafe void StartMainLoop()
         {
             globalStop = false;
+            if(FFXIVClientStructs.FFXIV.Client.Game.RetainerManager.Instance()->GetRetainerCount() <= 0)
+            {
+                DuoLog.Error("You have no retainers, why bother?");
+            }
             //Don't bother going home if there is already a bell in interaction distance or open
-            var bell = Helpers.GetReachableRetainerBell();
-
+            var bell = Helpers.Helpers.GetReachableRetainerBell();
 
             if (!bell && (config.UsePersonalHouse || config.UseFCHouse) && !globalStop)
             {
@@ -84,8 +87,8 @@ namespace EasyInventoryManager
                 Instance.TaskManager.Enqueue(() => Player.Interactable && Svc.ClientState.TerritoryType.EqualsAny(Houses.List), 1000 * 60, "WaitUntilArrival");
                 //Make sure we wait for loading, etc
                 var time = DateTimeOffset.Now.AddSeconds(5);
-                Instance.TaskManager.Enqueue(() => Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
-            } else if (!bell || Vector3.Distance(Svc.ClientState.LocalPlayer.Position, Helpers.GetClosestRetainerBell().Position) > 20f)
+                Instance.TaskManager.Enqueue(() => Helpers.Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
+            } else if (!bell || Vector3.Distance(Svc.ClientState.LocalPlayer.Position, Helpers.Helpers.GetClosestRetainerBell().Position) > 20f)
             {
                 DuoLog.Error("No house to go to. Stand next to a bell, hobo");
             }
