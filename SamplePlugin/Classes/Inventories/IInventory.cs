@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyInventoryManager.Classes.Inventories
 {
-    internal class IInventory
+    internal interface IInventory
     {
     }
 }
