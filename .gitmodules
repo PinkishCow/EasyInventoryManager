@@ -4,3 +4,12 @@
 [submodule "ClickLib"]
 	path = ClickLib
 	url = https://github.com/Limiana/ClickLib.git
+[submodule "CriticalCommonLib"]
+	path = CriticalCommonLib
+	url = https://github.com/Critical-Impact/CriticalCommonLib.git
+[submodule "LuminaSupplemental"]
+	path = LuminaSupplemental
+	url = https://github.com/Critical-Impact/LuminaSupplemental.git
+[submodule "DalaMock"]
+	path = DalaMock
+	url = https://github.com/Critical-Impact/DalaMock.git

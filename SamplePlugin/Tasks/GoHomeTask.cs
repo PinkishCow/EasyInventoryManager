@@ -42,8 +42,7 @@ namespace EasyInventoryManager.Tasks
             });
 
             // Set a timestamp to wait for a specific time
-            var time = DateTimeOffset.Now.AddSeconds(6);
-            Instance.TaskManager.Enqueue(() => Helpers.Helpers.waitUntilTimestamp(time), 1000 * 60, "WaitForTime");
+            Instance.TaskManager.Enqueue(() => Helpers.Helpers.waitForSeconds(6), 1000 * 60, "WaitForTime");
 
             // Wait until the player is interactable and in one of the residential areas
             Instance.TaskManager.Enqueue(() => Player.Interactable && Svc.ClientState.TerritoryType.EqualsAny(ResidentalAreas.List), 1000 * 60, "WaitUntilArrival");
@@ -152,10 +151,10 @@ namespace EasyInventoryManager.Tasks
             {
                 return null;
             }
-            var addon = Helpers.GetSpecificYesno(Helpers.ConfirmHouseEntrance);
+            var addon = Helpers.Helpers.GetSpecificYesno(Helpers.Helpers.ConfirmHouseEntrance);
             if (addon != null)
             {
-                if (Helpers.IsAddonReady(addon) && EzThrottler.Throttle("SelectYesno"))
+                if (GenericHelpers.IsAddonReady(addon) && EzThrottler.Throttle("SelectYesno"))
                 {
                     DuoLog.Information("Select yes");
                     ClickSelectYesNo.Using((nint)addon).Yes();
@@ -164,7 +163,7 @@ namespace EasyInventoryManager.Tasks
             }
             else
             {
-                if (Helpers.TrySelectSpecificEntry(Helpers.GoToYourApartment, () => EzThrottler.Throttle("SelectYesno")))
+                if (Helpers.Helpers.TrySelectSpecificEntry(Helpers.Helpers.GoToYourApartment, () => EzThrottler.Throttle("SelectYesno")))
                 {
                     DuoLog.Information("Confirmed going to apartment");
                     return true;

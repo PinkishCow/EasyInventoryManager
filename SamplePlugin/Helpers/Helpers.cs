@@ -23,8 +23,11 @@ namespace EasyInventoryManager.Helpers
 {
     internal unsafe static class Helpers
     {
+        internal static DateTimeOffset? timeToWaitTill = null;
         // Stolen from AutoRetainer, Change later :)
         internal static string[] BellName => [Svc.Data.GetExcelSheet<EObjName>()!.GetRow(2000401)!.Singular.ExtractText(), "リテイナーベル"];
+
+        internal static string quitRetainerString => Svc.Data.GetExcelSheet<Addon>().GetRow(917).Text.ExtractText();
 
         internal static readonly string[] Entrance =
     [
@@ -125,7 +128,7 @@ namespace EasyInventoryManager.Helpers
                 {
                     var addon = (AtkUnitBase*)Svc.GameGui.GetAddonByName("SelectYesno", i);
                     if (addon == null) return null;
-                    if (IsAddonReady(addon))
+                    if (GenericHelpers.IsAddonReady(addon))
                     {
                         var textNode = addon->UldManager.NodeList[15]->GetAsAtkTextNode();
                         var text = MemoryHelper.ReadSeString(&textNode->NodeText).ExtractText().Replace(" ", "");
@@ -145,12 +148,6 @@ namespace EasyInventoryManager.Helpers
             return null;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAddonReady(AtkUnitBase* Addon)
-        {
-            return Addon->IsVisible && Addon->UldManager.LoadedState == AtkLoadState.Loaded;
-        }
-
         internal static bool TrySelectSpecificEntry(IEnumerable<string> text, Func<bool> Throttler = null)
         {
             return TrySelectSpecificEntry((x) => x.EqualsAny(text), Throttler);
@@ -158,7 +155,7 @@ namespace EasyInventoryManager.Helpers
 
         internal static bool TrySelectSpecificEntry(Func<string, bool> inputTextTest, Func<bool> Throttler = null)
         {
-            if (GenericHelpers.TryGetAddonByName<AddonSelectString>("SelectString", out var addon) && IsAddonReady(&addon->AtkUnitBase))
+            if (GenericHelpers.TryGetAddonByName<AddonSelectString>("SelectString", out var addon) && GenericHelpers.IsAddonReady(&addon->AtkUnitBase))
             {
                 var entry = GetEntries(addon).FirstOrDefault(inputTextTest);
                 if (entry != null)
@@ -179,12 +176,19 @@ namespace EasyInventoryManager.Helpers
             return false;
         }
 
-        internal static bool? waitUntilTimestamp(DateTimeOffset time)
+        internal static bool? waitForSeconds(int seconds)
         {
-            if (DateTimeOffset.Now > time)
+            if (timeToWaitTill != null)
             {
-                DuoLog.Information($"Timestamp reached: {DateTimeOffset.Now.Ticks} > {time.Ticks}");
-                return true;
+                if (DateTimeOffset.Now > timeToWaitTill)
+                {
+                    timeToWaitTill = null;
+                    return true;
+                }
+            }
+            else
+            {
+                timeToWaitTill = DateTimeOffset.Now.AddSeconds(seconds);
             }
             return false;
         }

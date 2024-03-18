@@ -35,7 +35,7 @@ namespace EasyInventoryManager.Retainer
             List<Item> allItems = RetainerInventory.GetAllItemsInInv();
             foreach (var item in allItems)
             {
-                DuoLog.Debug($"Item ID: {item.ItemID}, Quantity: {item.Quantity}");
+                DuoLog.Debug($"Item ID: {item.itemId}, quantity: {item.quantity}");
             }
         }
 
@@ -107,7 +107,7 @@ namespace EasyInventoryManager.Retainer
                 for (var s = 0; s < c->Size; s++)
                 {
                     var slot = c->GetInventorySlot(s);
-                    // Check if the slot is empty (ItemID == 0)
+                    // Check if the slot is empty (itemId == 0)
                     if (slot->ItemID == 0) empty++;
                 }
 
@@ -147,8 +147,8 @@ namespace EasyInventoryManager.Retainer
                     {
                         var item = new Item
                         {
-                            ItemID = slot->ItemID,
-                            Quantity = slot->Quantity
+                            itemId = slot->ItemID,
+                            quantity = slot->Quantity
                         };
                         items.Add(item);
                     }
@@ -158,10 +158,17 @@ namespace EasyInventoryManager.Retainer
         }
 
     }
-    public struct Item
+    public unsafe struct Item
     {
-        public uint ItemID { get; set; }
-        public uint Quantity { get; set; }
+        public uint itemId { get; set; }
+
+        public uint quantity { get; set; }
+
+        public InventoryType inventoryType { get; set; }
+
+        public byte sortedRetainerIndex { get; set; }
+
+
 
     }
 }

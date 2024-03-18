@@ -20,7 +20,7 @@ namespace EasyInventoryManager.Tasks
         {
             Instance.TaskManager.Enqueue(() =>
             {
-                var bell = Helpers.GetClosestRetainerBell();
+                var bell = Helpers.Helpers.GetClosestRetainerBell();
                 if (!bell)
                 {
                     DuoLog.Error("No retainer bell found");
