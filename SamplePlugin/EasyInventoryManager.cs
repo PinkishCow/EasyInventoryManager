@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using DalaMock.Shared.Classes;
 using Dalamud.Game.ClientState.Conditions;
+using System.Linq;
 
 
 namespace EasyInventoryManager
@@ -47,6 +48,7 @@ namespace EasyInventoryManager
         internal static ICharacterMonitor characterMonitor;
         internal static IInventoryMonitor inventoryMonitor;
         internal static IInventoryScanner inventoryScanner;
+        //internal static InventoryHistory inventoryHistory;
         internal static OdrScanner odrScanner;
         internal static IGameInterface gameInterface;
         internal static IGameUiManager gameUiManager;
@@ -91,6 +93,8 @@ namespace EasyInventoryManager
             inventoryScanner = new InventoryScanner(characterMonitor, gameUiManager, gameInterface, odrScanner, Service.GameInteropProvider);
             inventoryMonitor = new InventoryMonitor(characterMonitor, craftMonitor, inventoryScanner, Service.Framework);
             inventoryScanner.Enable();
+            inventoryMonitor.Start();
+            //inventoryHistory = new InventoryHistory(inventoryMonitor);
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
@@ -138,7 +142,7 @@ namespace EasyInventoryManager
             {
                 Instance.TaskManager.Enqueue(() => DuoLog.Error("No house to go to. Stand next to a bell, hobo"));
             }
-            
+
             Instance.TaskManager.Enqueue(() => !Instance.TaskManager.TaskStack.ContainsAny("WaitForTime"));
             Instance.TaskManager.Enqueue(() => AtBell());
             //Got to have a bell nearby if we aren't going home
@@ -216,6 +220,23 @@ namespace EasyInventoryManager
         public void DrawMainUI()
         {
             MainWindow.IsOpen = !MainWindow.IsOpen;
+        }
+
+        public void InvTest()
+        {
+            // display information about all known ivnentories
+            foreach (var inv in inventoryMonitor.Inventories)
+            {
+                if (characterMonitor.Characters[inv.Value.CharacterId].CharacterType.EqualsAny([CharacterType.Character, CharacterType.Retainer, CharacterType.FreeCompanyChest]))
+                {
+                    DuoLog.Information($"Char name: {characterMonitor.Characters[inv.Value.CharacterId].Name}");
+                }
+                else
+                {
+                    DuoLog.Information($"Char id: {inv.Value.CharacterId}");
+                }
+
+            }
         }
 
     }

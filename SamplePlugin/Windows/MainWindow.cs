@@ -38,5 +38,9 @@ public class MainWindow : Window, IDisposable
         {
             Instance.StopAll();
         }
+        else if (ImGui.Button("InvTest"))
+        {
+            Instance.InvTest();
+        }
     }
 }

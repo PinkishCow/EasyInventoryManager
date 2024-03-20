@@ -3,6 +3,7 @@
     <Import Project="Dalamud.Plugin.Bootstrap.targets" />
 
     <PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Authors></Authors>
         <Company></Company>
         <Version>0.0.0.1</Version>
@@ -18,9 +19,5 @@
         <ProjectReference Include="..\CriticalCommonLib\CriticalCommonLib.csproj" />
         <ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
         <ProjectReference Include="..\LuminaSupplemental\src\LuminaSupplemental.Excel\LuminaSupplemental.Excel.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Sorter\" />
     </ItemGroup>
 </Project>

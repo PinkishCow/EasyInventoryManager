@@ -9,8 +9,6 @@ namespace EasyInventoryManager
     {
         public int Version { get; set; } = 0;
 
-        public bool UseSaddlebag { get; set; } = false;
-
         public bool DepositCrystals { get; set; } = false;
 
         public bool DepositAll { get; set; } = false;
@@ -18,18 +16,6 @@ namespace EasyInventoryManager
         public bool UsePersonalHouse { get; set; } = false;
 
         public bool UseFCHouse { get; set; } = false;
-
-        public bool retardTest { get; set; } = false;
-
-        public bool iSlots { get; set; } = false;
-
-        public bool retSlots { get; set; } = false;
-
-        public bool retainerCount { get; set; } = false;
-
-        public bool retIndex { get; set; } = false;
-
-        public bool getInvItems {  get; set; } = false;
 
 
         // the below exist just to make saving less cumbersome
